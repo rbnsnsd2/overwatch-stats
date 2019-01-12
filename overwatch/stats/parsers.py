@@ -19,7 +19,7 @@ def parse_time(value):
         return 0.0
 
     if ':' in value:  # e.g. 03:52
-        times = list(map(int, value.split(':')))
+        times = list(map(int, value.replace(',','').split(':')))
 
         return datetime.timedelta(**{
             unit: time for unit, time in zip(('seconds', 'minutes', 'hours'), reversed(times))

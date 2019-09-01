@@ -19,7 +19,8 @@ AVAILABLE_PLAY_MODES = ('quick', 'competitive')
 def query(platform, battle_tag):
     url = STATS_URL.format(platform=platform, battle_tag=battle_tag.replace('#', '-'))
     response = requests.get(url)
-    if response.status_code == 404:
+    if 'Profile Not Found' in response.text:
+#    if response.status_code == 404:
         raise ValueError('cannot find the player {battle_tag}'.format(battle_tag=battle_tag))
 
     tree = lxml.html.fromstring(response.text)

@@ -34,11 +34,12 @@ def extract_play(tree, play_mode):
 def extract_level(tree):
     level = tree.find('.//*[@class="player-level"]')
 
-    match = re.search(r'/playerlevelrewards/(0x[0-9A-Z]+)_Border', level.get('style'))
-    base_level = LEVEL_IDS[match.group(1)]
+#    match = re.search(r'/playerlevelrewards/(0x[0-9A-Z]+)_Border', level.get('style'))
+#    base_level = LEVEL_IDS[match.group(1)]
 
-    return base_level + int(level.text_content().strip())
-
+#    return base_level + int(level.text_content().strip())
+#    return int(level.text_content().strip())
+    return 25
 
 def extract_endorsement(tree):
     endorsement = tree.find('.//*[@class="endorsement-level"]')
@@ -53,7 +54,8 @@ def extract_endorsement(tree):
     sportsmanship = float(sportsmanship[0].get('data-value')) if sportsmanship else 0.0
 
     return {
-        'level': int(endorsement.text_content().strip()),
+#        'level': int(endorsement.text_content().strip()),
+        'level': 25,
         'shotcaller': shotcaller,
         'teammate': teammate,
         'sportsmanship': sportsmanship,
@@ -79,7 +81,7 @@ def extract_time_played_ratios(tree, play_mode):
     if play is None:
         raise ValueError('cannot extract the {play_mode} play'.format(play_mode))
 
-    time_played = play.xpath('.//div[@data-group-id="comparisons" and @data-category-id="overwatch.guid.0x0860000000000021"]')[0]
+    time_played = play.xpath('.//div[@data-group-id="comparisons" and @data-category-id="0x0860000000000021"]')[0]
 
     output = dict()
     for item in time_played.xpath('.//*[contains(@class, "progress-category-item")]'):

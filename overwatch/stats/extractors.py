@@ -54,7 +54,7 @@ def extract_endorsement(tree):
     sportsmanship = float(sportsmanship[0].get('data-value')) if sportsmanship else 0.0
 
     return {
-#        'level': int(endorsement.text_content().strip()),
+        #        'level': int(endorsement.text_content().strip()),
         'level': 25,
         'shotcaller': shotcaller,
         'teammate': teammate,
@@ -68,13 +68,38 @@ def extract_icon_url(tree):
     return icon.get('src').strip()
 
 
+def extract_rank_role(competitive_rank):
+#    tank = re.search('tank', 
+    return
+
+
 def extract_competitive_rank(tree):
     competitive_rank = tree.find('.//*[@class="competitive-rank"]')
     if competitive_rank is None:  # not played competitive mode or not completed placement matches
+        print("found comp rank with none")
         return None
+    try:
+        rank = [r for r in competitive_rank.itertext()]
+        links = [l[2] for l in competitive_rank.iterlinks()]
+        assert len(rank) == len(links[::2]), "competitive ranks and roles of diff length"
+        role_rank = dict()
+        print(f"comp_rank: {competitive_rank.text_content()}")
+        for r, l in zip(rank, links[::2]):
+            print(r, l)
+            if "tank" in l:
+                role_rank["tank"] = str(r)
+            if "offense" in l:
+                role_rank["offense"] = str(r)
+            if "support" in l:
+                role_rank["support"] = str(r)
 
-    return int(competitive_rank.text_content().strip())
-
+        return "/".join([
+            role_rank.get("tank", str(0)),
+            role_rank.get("offense", str(0)),
+            role_rank.get("support", str(0))])
+    except Exception as e:
+        print(e)
+        return None
 
 def extract_time_played_ratios(tree, play_mode):
     play = extract_play(tree, play_mode)

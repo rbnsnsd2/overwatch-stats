@@ -76,14 +76,12 @@ def extract_rank_role(competitive_rank):
 def extract_competitive_rank(tree):
     competitive_rank = tree.find('.//*[@class="competitive-rank"]')
     if competitive_rank is None:  # not played competitive mode or not completed placement matches
-        print("found comp rank with none")
         return None
     try:
         rank = [r for r in competitive_rank.itertext()]
         links = [l[2] for l in competitive_rank.iterlinks()]
         assert len(rank) == len(links[::2]), "competitive ranks and roles of diff length"
         role_rank = dict()
-        print(f"comp_rank: {competitive_rank.text_content()}")
         for r, l in zip(rank, links[::2]):
             print(r, l)
             if "tank" in l:

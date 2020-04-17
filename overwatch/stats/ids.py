@@ -32,6 +32,7 @@ HERO_CATEGORY_IDS = {
     'ashe': '0x02E0000000000200',
     'baptiste': '0x02E0000000000221',
     'sigma': '0x02E000000000023B',
+    'echo': '0x02E0000000000206',
 }
 INVERTED_HERO_CATEGORY_IDS = {category_id: hero for hero, category_id in HERO_CATEGORY_IDS.items()}
 
